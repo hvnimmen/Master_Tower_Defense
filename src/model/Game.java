@@ -9,10 +9,8 @@ public class Game {
     private TileGrid grid;
 
     public Game(MainMenu mainMenu){
-        this.grid = grid;
         this.mainMenu = mainMenu;
         this.gameView = new GameView(this);
-
     }
 
     public void exitGame(){
