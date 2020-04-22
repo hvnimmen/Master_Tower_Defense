@@ -36,6 +36,7 @@ public class Game {
 
                 gameView.updateEnemies(waveManager.getCurrentWave().getEnemyList());
                 gameView.updateTowersAndProjectiles(player.getTowerList());
+                gameView.updatePlayerInfo();
             }
         };
         gameLoop.start();
@@ -52,6 +53,10 @@ public class Game {
 
     public Player getPlayer() {
         return this.player;
+    }
+
+    public WaveManager getWaveManager() {
+        return this.waveManager;
     }
 
 }

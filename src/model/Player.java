@@ -54,7 +54,7 @@ public class Player {
         Tile currentTile = grid.getTile(x, y);
 
         if (!currentTile.isOccupied() && changeGold(-20)) {
-            towerList.add(new ArcherTower(TowerType.Turret, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+            towerList.add(new FreezeTower(TowerType.Freezing, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
             currentTile.setOccupied(true);
             holdingTower = false;
             tempTower = null;
@@ -146,5 +146,13 @@ public class Player {
 
     public void setUpgrading(boolean upgrading) {
         this.upgrading = upgrading;
+    }
+
+    public static int getGold() {
+        return gold;
+    }
+
+    public static int getHP() {
+        return hp;
     }
 }

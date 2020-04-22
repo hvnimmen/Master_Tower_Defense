@@ -90,7 +90,8 @@ public class GameView {
         topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
         topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
 
-        midPanel = new InfoLabel("Lorem ipsum");
+        midPanel = new InfoLabel("Gold : " + Player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+                + "\n Lives : " + Player.getHP());
 
         botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
 
@@ -135,9 +136,11 @@ public class GameView {
                 gamePane.getChildren().addAll(t.getBaseImageView(), t.getTurretImageView());
             }
             for (Projectile p : t.getProjectiles()) {
+
                 p.getImageView().setRotate(p.getAngle());
                 p.getImageView().setLayoutX(p.getDisplayX());
                 p.getImageView().setLayoutY(p.getDisplayY());
+
                 if (!gamePane.getChildren().contains(p.getImageView())) {
                     gamePane.getChildren().add(p.getImageView());
                 }
@@ -146,6 +149,11 @@ public class GameView {
                 }
             }
         }
+    }
+
+    public void updatePlayerInfo() {
+        midPanel.setText("Gold : " + Player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+                + "\n Lives : " + Player.getHP());
     }
 
     public TowerType getCurrentTowerType() {

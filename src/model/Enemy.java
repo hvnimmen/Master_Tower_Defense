@@ -19,8 +19,8 @@ public class Enemy implements Entity{
     private ImageView imageView, shadowImageView;
     private Tile startTile;
     private TileGrid grid;
-    private Image image, shadowImage;
-    private ImageView healthBackground, healthForeground, healthBorder, frozen, aflame;
+    private Image image, shadowImage, normal, frozen, aflame;
+    private ImageView healthBackground, healthForeground, healthBorder;
     private Tile endTile = new Tile(0, 0, TileType.Sand);
 
     private int[] dir;
@@ -32,7 +32,7 @@ public class Enemy implements Entity{
         this.shadowImage = type.shadowImage;
         this.damage = type.damage;
         this.speed = (type.speed * 0.8f) + (float)Math.random() * (type.speed * 0.4f);
-        this.health = type.health * 0.5f;
+        this.health = type.health;
         this.maxHealth = type.health;
         this.status = "normal";
 
@@ -53,9 +53,11 @@ public class Enemy implements Entity{
 
         this.healthBackground = new ImageView(new Image("view/resources/health_background.png", SIZE, SIZE/8, false, false));
         this.healthForeground = new ImageView(new Image("view/resources/health_foreground.png", SIZE, SIZE/8, false, false));
-        this.aflame = new ImageView(new Image("file:flaming-health_foreground.png"));
-        this.frozen = new ImageView(new Image("file:frozen-health_foreground.png"));
         this.healthBorder = new ImageView(new Image("view/resources/health_border.png", SIZE, SIZE/8, false, false));
+
+        this.normal = new Image("view/resources/health_foreground.png");
+        this.aflame = new Image("view/resources/flaming-health-fg.png");
+        this.frozen = new Image("view/resources/frozen-health-fg.png");
 
         this.dir = new int[2];
         this.dir[0] = 1;
@@ -119,7 +121,14 @@ public class Enemy implements Entity{
             displayX = (int)(x * SIZE);
             displayY = (int)(y * SIZE);
         }
-        this.getHealthForeground().setFitWidth(SIZE * health / maxHealth);
+        healthForeground.setFitWidth(SIZE * health / maxHealth);
+        if (status.equals("frozen")) {
+            healthForeground.setImage(frozen);
+        } else if (status.equals("aflame")) {
+            healthForeground.setImage(aflame);
+        } else {
+            healthForeground.setImage(normal);
+        }
     }
 
     //pathfinding method
