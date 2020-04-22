@@ -27,23 +27,23 @@ public class GameView {
     private VBox select;
     private Scene gameScene;
     private Stage gameStage;
+    private SelectPanel topPanel;
+    private InfoLabel midPanel;
+    private ImageView botPanel;
 
+    private MapMoveHandler mapMoveHandler;
+    private MapClickHandler mapClickHandler;
     private GameQuitHandler gameQuitHandler;
 
+    private TowerType currentTowerType;
+    private boolean selling, upgrading;
+
     public GameView(Game game) {
-
         this.game = game;
-
         initializeStage();
-
-        addQuitHandler();
-
         drawMap();
-
         drawUI();
-
         initializeListeners();
-
     }
 
     private void initializeStage() {
@@ -59,8 +59,14 @@ public class GameView {
     }
 
     private void initializeListeners() {
-        gamePane.setOnMouseMoved(new MapMoveHandler(this));
-        gamePane.setOnMouseClicked(new MapClickHandler(game.getPlayer()));
+        mapMoveHandler = new MapMoveHandler(this);
+        gamePane.setOnMouseMoved(mapMoveHandler);
+
+        mapClickHandler = new MapClickHandler(game.getPlayer());
+        gamePane.setOnMouseClicked(mapClickHandler);
+
+        gameQuitHandler = new GameQuitHandler(game);
+        gameStage.setOnCloseRequest(gameQuitHandler);
     }
 
     private void drawMap() {
@@ -74,27 +80,24 @@ public class GameView {
         }
     }
 
-    private void addQuitHandler() {
-        this.gameQuitHandler = new GameQuitHandler(game);
-        gameStage.setOnCloseRequest(gameQuitHandler);
-    }
-
     private void drawUI(){
-        SelectPanel topPanel = new SelectPanel(4 * SIZE, 3 * SIZE);
-        topPanel.quickAdd("turret", new Image("view/resources/green_turret.png"));
-        topPanel.quickAdd("flaming", new Image("view/resources/red_turret.png"));
-        topPanel.quickAdd("freeze", new Image("view/resources/blue_turret.png"));
-        topPanel.quickAdd("launcher", new Image("view/resources/rocket_launcher.png"));
-        topPanel.quickAdd("upgrade", new Image("view/resources/upgrade.png"));
-        topPanel.quickAdd("sell", new Image("view/resources/sell.png"));
 
-        InfoLabel midPanel = new InfoLabel("Lorem ipsum");
+        topPanel = new SelectPanel(4 * SIZE, 3 * SIZE);
+        topPanel.quickAdd(new SelectButton(TowerType.Turret, new Image("view/resources/green_turret.png"), this ));
+        topPanel.quickAdd(new SelectButton(TowerType.Flaming, new Image("view/resources/red_turret.png"), this));
+        topPanel.quickAdd(new SelectButton(TowerType.Freezing, new Image("view/resources/blue_turret.png"), this));
+        topPanel.quickAdd(new SelectButton(TowerType.Launcher, new Image("view/resources/rocket_launcher.png"), this));
+        topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
+        topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
 
-        ImageView botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+        midPanel = new InfoLabel("Lorem ipsum");
+
+        botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
 
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT, null)));
+
         select.getChildren().addAll(topPanel, midPanel, botPanel);
     }
 
@@ -145,8 +148,31 @@ public class GameView {
         }
     }
 
+    public TowerType getCurrentTowerType() {
+        return currentTowerType;
+    }
+
+    public void setCurrentTowerType(TowerType currentTowerType) {
+        this.currentTowerType = currentTowerType;
+    }
+
+    public boolean isSelling() {
+        return selling;
+    }
+
+    public void setSelling(boolean selling) {
+        this.selling = selling;
+    }
+
+    public boolean isUpgrading() {
+        return upgrading;
+    }
+
+    public void setUpgrading(boolean upgrading) {
+        this.upgrading = upgrading;
+    }
+
     public Pane getGamePane() {
         return this.gamePane;
     }
-
 }

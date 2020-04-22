@@ -1,6 +1,7 @@
 package model;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.layout.Pane;
 import view.*;
 
 import static model.Leveller.LoadMap;

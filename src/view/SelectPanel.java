@@ -1,6 +1,5 @@
 package view;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,9 +21,8 @@ public class SelectPanel extends Pane {
         getChildren().add(new ImageView(new Image("view/resources/metal_panel.png", width, height, false, false)));
     }
 
-    public void quickAdd(String name, Image image) {
-        SelectButton b = new SelectButton(name, image);
-        setButton(b);
+    public void quickAdd(SelectButton selectButton) {
+        setButton(selectButton);
     }
 
     private void setButton(Button b) {
