@@ -6,10 +6,10 @@ import static view.GameView.SIZE;
 
 public enum TowerType {
 
-    Turret("view/resources/turret_base.png", "view/resources/green_turret.png",  ProjectileType.Archer, 3, 2, 20),
-    Freezing("view/resources/turret_base.png", "file:freeze-bow.png",  ProjectileType.Freeze, 3, 2, 20),
-    Flaming("view/resources/turret_base.png", "file:flaming-bow.png", ProjectileType.Flaming, 3, 2, 20),
-    Sniper("view/resources/turret_base.png", "file:sniper-bow.png", ProjectileType.Rocket, 15, 4, 80);
+    Turret("view/resources/turret_base.png", "view/resources/green_turret.png",  ProjectileType.Archer, 4, 2, 20),
+    Freezing("view/resources/turret_base.png", "view/resources/blue_turret.png",  ProjectileType.Freeze, 4, 2, 20),
+    Flaming("view/resources/turret_base.png", "view/resources/red_turret.png", ProjectileType.Flaming, 4, 2, 20),
+    Launcher("view/resources/turret_base.png", "view/resources/rocket_launcher.png", ProjectileType.Rocket, 15, 4, 80);
 
     Image baseImage, turretImage;
     ProjectileType projectileType;

@@ -80,9 +80,18 @@ public class GameView {
     }
 
     private void drawUI(){
-        ImageView topPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
-        ImageView midPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+        SelectPanel topPanel = new SelectPanel(4 * SIZE, 3 * SIZE);
+        topPanel.quickAdd("turret", new Image("view/resources/green_turret.png"));
+        topPanel.quickAdd("flaming", new Image("view/resources/red_turret.png"));
+        topPanel.quickAdd("freeze", new Image("view/resources/blue_turret.png"));
+        topPanel.quickAdd("launcher", new Image("view/resources/rocket_launcher.png"));
+        topPanel.quickAdd("upgrade", new Image("view/resources/upgrade.png"));
+        topPanel.quickAdd("sell", new Image("view/resources/sell.png"));
+
+        InfoLabel midPanel = new InfoLabel("Lorem ipsum");
+
         ImageView botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT, null)));
@@ -91,6 +100,13 @@ public class GameView {
 
     public void updateEnemies(CopyOnWriteArrayList<Enemy> enemyList){
         for (Enemy e : enemyList) {
+
+            e.getShadowImageView().setLayoutX(e.getDisplayX() + SIZE/2);
+            e.getShadowImageView().setLayoutY(e.getDisplayY() + SIZE/4);
+
+            e.getImageView().setLayoutX(e.getDisplayX());
+            e.getImageView().setLayoutY(e.getDisplayY());
+
             e.getHealthBackground().setLayoutX(e.getDisplayX());
             e.getHealthBackground().setLayoutY(e.getDisplayY());
 
@@ -99,12 +115,6 @@ public class GameView {
 
             e.getHealthBorder().setLayoutX(e.getDisplayX());
             e.getHealthBorder().setLayoutY(e.getDisplayY());
-
-            e.getImageView().setLayoutX(e.getDisplayX());
-            e.getImageView().setLayoutY(e.getDisplayY());
-
-            e.getShadowImageView().setLayoutX(e.getDisplayX() + SIZE/2);
-            e.getShadowImageView().setLayoutY(e.getDisplayY() + SIZE/4);
 
             if (!gamePane.getChildren().contains(e.getImageView())){
                 gamePane.getChildren().addAll(e.getShadowImageView(), e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
