@@ -9,37 +9,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.*;
+import model.*;
 
 public class MainMenuView {
 
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
 
+    private MainMenu mainMenu;
+
     private AnchorPane mainPane;
-    private Scene mainScene;
     private Stage mainStage;
 
     private List<Button> mainMenuButtons;
 
-    private PlayButtonHandler playButtonHandler;
-    private EditorButtonHandler editorButtonHandler;
-    private QuitButtonHandler quitButtonHandler;
+    public MainMenuView(MainMenu mainMenu) {
+        this.mainMenu = mainMenu;
+        this.mainMenuButtons = new ArrayList<>();
+        initializeStage();
+        createButtons();
+    }
 
-    public MainMenuView() {
+    private void initializeStage() {
 
         mainPane = new AnchorPane();
-        mainScene = new Scene(mainPane, WIDTH, HEIGHT);
+        Scene mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainStage = new Stage();
         mainStage.setScene(mainScene);
         mainStage.setTitle("Tower Defense : Main Menu");
-
-        mainMenuButtons = new ArrayList<>();
-
-        playButtonHandler = new PlayButtonHandler();
-        editorButtonHandler = new EditorButtonHandler();
-        quitButtonHandler = new QuitButtonHandler();
-
-        createButtons();
+        mainStage.show();
 
     }
 
@@ -53,6 +51,7 @@ public class MainMenuView {
         Button playButton = new Button("PLAY");
         addMainMenuButton(playButton);
 
+        PlayButtonHandler playButtonHandler = new PlayButtonHandler(mainMenu);
         playButton.setOnMouseClicked(playButtonHandler);
     }
 
@@ -60,6 +59,7 @@ public class MainMenuView {
         Button editorButton = new Button("EDITOR");
         addMainMenuButton(editorButton);
 
+        EditorButtonHandler editorButtonHandler = new EditorButtonHandler();
         editorButton.setOnMouseClicked(editorButtonHandler);
     }
 
@@ -67,6 +67,7 @@ public class MainMenuView {
         Button quitButton = new Button("QUIT");
         addMainMenuButton(quitButton);
 
+        QuitButtonHandler quitButtonHandler = new QuitButtonHandler();
         quitButton.setOnMouseClicked(quitButtonHandler);
     }
 
@@ -78,7 +79,7 @@ public class MainMenuView {
     }
 
     public Stage getMainStage() {
-        return mainStage;
+        return this.mainStage;
     }
 
 }
