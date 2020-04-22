@@ -4,16 +4,17 @@ import javafx.scene.image.Image;
 
 public enum EnemyType {
 
-    Zombie(new Image("view/resources/white_plane.png"), 2, 50, 2, 5),
-    Spider(new Image("view/resources/green_plane.png"), 4, 25, 1, 3),
-    Random(new Image("view/resources/white_plane.png"), 0, 0, 0, 0);
+    Zombie("view/resources/white_plane.png", "view/resources/white_plane_shadow.png", 2, 50, 2, 5),
+    Spider("view/resources/green_plane.png", "view/resources/green_plane_shadow.png", 4, 25, 1, 3),
+    Random("view/resources/white_plane.png", "view/resources/green_plane_shadow.png", 0, 0, 0, 0);
 
-    Image image;
+    Image image, shadowImage;
     float speed;
     int health, damage, bounty;
 
-    EnemyType(Image image, float speed, int health, int damage, int bounty){
-        this.image = image;
+    EnemyType(String baseName, String shadowName, float speed, int health, int damage, int bounty){
+        this.image = new Image(baseName);
+        this.shadowImage = new Image(shadowName);
         this.speed = speed;
         this.health = health;
         this.damage = damage;

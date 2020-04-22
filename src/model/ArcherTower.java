@@ -12,7 +12,7 @@ public class ArcherTower extends Tower{
 
     @Override
     public void shoot(Enemy target) {
-        super.projectiles.add(new Arrow(super.type.projectileType, target, super.getX(), super.getY(),
+        super.getProjectiles().add(new Arrow(super.getProjectileType(), target, super.getX(), super.getY(),
                 SIZE/2, SIZE/2));
     }
 

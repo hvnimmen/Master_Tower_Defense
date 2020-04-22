@@ -11,16 +11,14 @@ import model.*;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static model.Leveller.LoadMap;
-
 public class GameView {
 
     public static final int SIZE = 64;
 
-    protected static final int X_TILES = 18;
-    protected static final int Y_TILES = 12;
+    public static final int X_TILES = 18;
+    public static final int Y_TILES = 12;
 
-    protected static final int MENU_X_TILES = 4;
+    public static final int MENU_X_TILES = 4;
 
     private Game game;
 
@@ -44,6 +42,8 @@ public class GameView {
 
         drawUI();
 
+        initializeListeners();
+
     }
 
     private void initializeStage() {
@@ -56,6 +56,11 @@ public class GameView {
         gameStage = new Stage();
         gameStage.setScene(gameScene);
         gameStage.show();
+    }
+
+    private void initializeListeners() {
+        gamePane.setOnMouseMoved(new MapMoveHandler(this));
+        gamePane.setOnMouseClicked(new MapClickHandler(game.getPlayer()));
     }
 
     private void drawMap() {
@@ -75,9 +80,9 @@ public class GameView {
     }
 
     private void drawUI(){
-        ImageView topPanel = new ImageView(new Image("view/resources/light_beige_panel.png", 4*SIZE, 4*SIZE, false, false));
-        ImageView midPanel = new ImageView(new Image("view/resources/beige_panel.png", 4*SIZE, 4*SIZE, false, false));
-        ImageView botPanel = new ImageView(new Image("view/resources/brown_panel.png", 4*SIZE, 4*SIZE, false, false));
+        ImageView topPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+        ImageView midPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+        ImageView botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT, null)));
@@ -97,13 +102,41 @@ public class GameView {
 
             e.getImageView().setLayoutX(e.getDisplayX());
             e.getImageView().setLayoutY(e.getDisplayY());
+
+            e.getShadowImageView().setLayoutX(e.getDisplayX() + SIZE/2);
+            e.getShadowImageView().setLayoutY(e.getDisplayY() + SIZE/4);
+
             if (!gamePane.getChildren().contains(e.getImageView())){
-                gamePane.getChildren().addAll(e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
+                gamePane.getChildren().addAll(e.getShadowImageView(), e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
             }
             if (!e.isAlive()){
-                gamePane.getChildren().removeAll(e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
+                gamePane.getChildren().removeAll(e.getShadowImageView(), e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
             }
         }
+    }
+
+    public void updateTowersAndProjectiles(CopyOnWriteArrayList<Tower> towerList) {
+        for (Tower t : towerList) {
+            t.getTurretImageView().setRotate(t.getAngle());
+            if (!gamePane.getChildren().contains(t.getBaseImageView())) {
+                gamePane.getChildren().addAll(t.getBaseImageView(), t.getTurretImageView());
+            }
+            for (Projectile p : t.getProjectiles()) {
+                p.getImageView().setRotate(p.getAngle());
+                p.getImageView().setLayoutX(p.getDisplayX());
+                p.getImageView().setLayoutY(p.getDisplayY());
+                if (!gamePane.getChildren().contains(p.getImageView())) {
+                    gamePane.getChildren().add(p.getImageView());
+                }
+                if (p.HasCollided()) {
+                    gamePane.getChildren().remove(p.getImageView());
+                }
+            }
+        }
+    }
+
+    public Pane getGamePane() {
+        return this.gamePane;
     }
 
 }

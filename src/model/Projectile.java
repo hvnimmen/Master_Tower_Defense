@@ -34,13 +34,6 @@ public abstract class Projectile implements Entity {
 
         this.angle = calculateAngle();
         this.imageView = new ImageView(image);
-        this.imageView.setPreserveRatio(true);
-        this.imageView.setFitHeight(size);
-        this.imageView.setRotate(0);
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        this.image = imageView.snapshot(params, null);
-        this.imageView = new ImageView(image);
 
         this.width = (int)this.image.getWidth();
         this.height = (int)this.image.getHeight();
@@ -50,7 +43,7 @@ public abstract class Projectile implements Entity {
 
     private float calculateAngle() {
         double tempAngle = Math.atan2(target.getY() - y, target.getX() - x);
-        return (float) Math.toDegrees(tempAngle) + 45;
+        return (float) Math.toDegrees(tempAngle) + 90;
     }
 
     private void calculateDirection() {
@@ -74,12 +67,7 @@ public abstract class Projectile implements Entity {
             x += Delta() * 0.001 * xVelocity * speed;
             y += Delta() * 0.001 * yVelocity * speed;
 
-            float angle = calculateAngle();
-            imageView.setRotate(angle);
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            this.image = imageView.snapshot(params, null);
-            offset = (float) ((this.image.getWidth() - SIZE) * 0.5);
+            angle = calculateAngle();
 
             this.displayX = (x + 0.5f) * SIZE - 0.5f * width;
             this.displayY = (y + 0.5f) * SIZE - 0.5f * height;
@@ -146,5 +134,21 @@ public abstract class Projectile implements Entity {
 
     public void changeSpeed(float change) {
         this.speed = type.speed * change;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public ProjectileType getType() {
+        return type;
+    }
+
+    public boolean HasCollided() {
+        return hasCollided;
     }
 }

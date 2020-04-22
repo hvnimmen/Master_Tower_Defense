@@ -16,10 +16,10 @@ public class Enemy implements Entity{
     private boolean first, alive, hugsLeft;
     private String status;
     private EnemyType type;
-    private ImageView imageView;
+    private ImageView imageView, shadowImageView;
     private Tile startTile;
     private TileGrid grid;
-    private Image image;
+    private Image image, shadowImage;
     private ImageView healthBackground, healthForeground, healthBorder, frozen, aflame;
     private Tile endTile = new Tile(0, 0, TileType.Sand);
 
@@ -29,6 +29,7 @@ public class Enemy implements Entity{
 
         this.type = type;
         this.image = type.image;
+        this.shadowImage = type.shadowImage;
         this.damage = type.damage;
         this.speed = (type.speed * 0.8f) + (float)Math.random() * (type.speed * 0.4f);
         this.health = type.health * 0.5f;
@@ -64,6 +65,8 @@ public class Enemy implements Entity{
 
         this.imageView = new ImageView(image);
         this.imageView.setRotate(angle);
+        this.shadowImageView = new ImageView(shadowImage);
+        this.shadowImageView.setRotate(angle);
     }
 
     public void draw(GraphicsContext gc) {
@@ -98,7 +101,6 @@ public class Enemy implements Entity{
         } else if (dir[0] == 0 && dir[1] == -1) {
             angle = 270;
         }
-        System.out.println(angle);
     }
 
     public void update() {
@@ -113,7 +115,6 @@ public class Enemy implements Entity{
                 x = (int)(x+0.5);
                 y = (int)(y+0.5);
                 rotate();
-                calculateAngle();
             }
             displayX = (int)(x * SIZE);
             displayY = (int)(y * SIZE);
@@ -142,6 +143,7 @@ public class Enemy implements Entity{
 
         calculateAngle();
         this.imageView.setRotate(angle);
+        this.shadowImageView.setRotate(angle);
 
         if (!canGoForward()){
             getToEnd();
@@ -325,5 +327,9 @@ public class Enemy implements Entity{
 
     public void setHealthBorder(ImageView healthBorder) {
         this.healthBorder = healthBorder;
+    }
+
+    public ImageView getShadowImageView() {
+        return this.shadowImageView;
     }
 }

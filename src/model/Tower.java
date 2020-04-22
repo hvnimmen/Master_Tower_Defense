@@ -1,10 +1,8 @@
 package model;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,15 +13,15 @@ import static view.GameView.SIZE;
 public abstract class Tower implements Entity{
 
     private int range, cost, level;
-    private float x, y, displayX, displayY, cooldown, timeSinceLastShot, offset, speedMultplier = 1;
-    public ArrayList<Projectile> projectiles;
+    private float x, y, displayX, displayY, cooldown, timeSinceLastShot, offset, angle = 0, speedMultplier = 1;
+    private ArrayList<Projectile> projectiles;
     private CopyOnWriteArrayList<Enemy> enemies;
     private boolean locked;
-    private Image image;
-    private ImageView imageView;
+    private Image baseImage, turretImage;
+    private ImageView baseImageView, turretImageView;
     private Enemy target;
-    public TowerType type;
-    public ProjectileType projectileType;
+    private TowerType type;
+    private ProjectileType projectileType;
 
     public Tower(TowerType type, Tile startTile, CopyOnWriteArrayList<Enemy> enemies){
         this.type = type;
@@ -46,8 +44,12 @@ public abstract class Tower implements Entity{
         this.enemies = enemies;
         this.locked = false;
 
-        this.image = type.image;
-        this.imageView = new ImageView(image);
+        this.baseImageView = new ImageView(type.baseImage);
+        this.turretImageView = new ImageView(type.turretImage);
+        baseImageView.setLayoutX(displayX);
+        baseImageView.setLayoutY(displayY);
+        turretImageView.setLayoutX(displayX);
+        turretImageView.setLayoutY(displayY);
     }
 
     private Enemy acquireTarget() {
@@ -78,7 +80,7 @@ public abstract class Tower implements Entity{
 
     private float calculateAngle() {
         double tempAngle = Math.atan2(target.getY() - y, target.getX() - x);
-        return (float) Math.toDegrees(tempAngle) + 45;
+        return (float) Math.toDegrees(tempAngle) + 90;
     }
 
     public abstract void shoot(Enemy target);
@@ -168,12 +170,12 @@ public abstract class Tower implements Entity{
             target = acquireTarget();
         } else {
 
-            float angle = calculateAngle();
-            imageView.setRotate(angle);
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            this.image = imageView.snapshot(params, null);
-            offset = (float) ((this.image.getWidth() - SIZE) * 0.5);
+            angle = calculateAngle();
+//            imageView.setRotate(angle);
+//            SnapshotParameters params = new SnapshotParameters();
+//            params.setFill(Color.TRANSPARENT);
+//            this.image = imageView.snapshot(params, null);
+//            offset = (float) ((this.image.getWidth() - SIZE) * 0.5);
 
             if (timeSinceLastShot > cooldown){
                 shoot(target);
@@ -194,7 +196,7 @@ public abstract class Tower implements Entity{
     }
 
     public void draw(GraphicsContext gc) {
-        gc.drawImage(image, (x * SIZE) - offset, (y * SIZE) - offset);
+        gc.drawImage(baseImage, (x * SIZE) - offset, (y * SIZE) - offset);
     }
 
     public boolean levelUp(){
@@ -205,5 +207,21 @@ public abstract class Tower implements Entity{
             return true;
         }
         return false;
+    }
+
+    public ImageView getBaseImageView() {
+        return this.baseImageView;
+    }
+
+    public ImageView getTurretImageView() {
+        return this.turretImageView;
+    }
+
+    public float getAngle() {
+        return this.angle;
+    }
+
+    public ProjectileType getProjectileType() {
+        return projectileType;
     }
 }

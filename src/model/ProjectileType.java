@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 public enum ProjectileType {
 
-    Archer(new Image("file:arrow.png"), 10, 15),
+    Archer(new Image("view/resources/shot.png"), 10, 20),
     Freeze(new Image("file:freeze-arrow-2.png"), 5, 15),
     Flaming(new Image("file:flaming-arrow-2.png"), 20, 15),
     Rocket(new Image("file:rocket.png"), 50, 5);

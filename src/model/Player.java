@@ -19,6 +19,8 @@ public class Player {
         this.towerList = new CopyOnWriteArrayList<Tower>();
         this.holdingTower = false;
         this.tempTower = null;
+
+        setup();
     }
 
     public void setup(){
@@ -41,7 +43,7 @@ public class Player {
         hp += change;
     }
 
-    public void update(GraphicsContext gc){
+    public void update(){
         for (Tower t : towerList){
             t.update();
             t.updateEnemyList(waveManager.getCurrentWave().getEnemyList());
@@ -50,41 +52,49 @@ public class Player {
 
     public void addTower(int x, int y){
         Tile currentTile = grid.getTile(x, y);
-        System.out.println(tempTower.getTowerType());
-        switch(tempTower.getTowerType()){
-            case Archer:
-                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())) {
-                    towerList.add(new ArcherTower(TowerType.Archer, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
-                    currentTile.setOccupied(true);
-                    holdingTower = false;
-                    tempTower = null;
-                }
-                break;
-            case Freeze:
-                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())){
-                    towerList.add(new FreezeTower(TowerType.Freeze, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
-                    currentTile.setOccupied(true);
-                    holdingTower = false;
-                    tempTower = null;
-                }
-                break;
-            case Flaming:
-                if (!currentTile.isOccupied() &&  changeGold(-tempTower.getCost())){
-                    towerList.add(new FlamingTower(TowerType.Flaming, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
-                    currentTile.setOccupied(true);
-                    holdingTower = false;
-                    tempTower = null;
-                }
-                break;
-            case Sniper:
-                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())){
-                    towerList.add(new SniperTower(TowerType.Sniper, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
-                    currentTile.setOccupied(true);
-                    holdingTower = false;
-                    tempTower = null;
-                }
-                break;
+
+        if (!currentTile.isOccupied() && changeGold(-20)) {
+            towerList.add(new ArcherTower(TowerType.Turret, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+            currentTile.setOccupied(true);
+            holdingTower = false;
+            tempTower = null;
         }
+
+//        System.out.println(tempTower.getTowerType());
+//        switch(tempTower.getTowerType()){
+//            case Archer:
+//                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())) {
+//                    towerList.add(new ArcherTower(TowerType.Archer, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+//                    currentTile.setOccupied(true);
+//                    holdingTower = false;
+//                    tempTower = null;
+//                }
+//                break;
+//            case Freeze:
+//                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())){
+//                    towerList.add(new FreezeTower(TowerType.Freeze, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+//                    currentTile.setOccupied(true);
+//                    holdingTower = false;
+//                    tempTower = null;
+//                }
+//                break;
+//            case Flaming:
+//                if (!currentTile.isOccupied() &&  changeGold(-tempTower.getCost())){
+//                    towerList.add(new FlamingTower(TowerType.Flaming, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+//                    currentTile.setOccupied(true);
+//                    holdingTower = false;
+//                    tempTower = null;
+//                }
+//                break;
+//            case Sniper:
+//                if (!currentTile.isOccupied() && changeGold(-tempTower.getCost())){
+//                    towerList.add(new SniperTower(TowerType.Sniper, grid.getTile(x, y), waveManager.getCurrentWave().getEnemyList()));
+//                    currentTile.setOccupied(true);
+//                    holdingTower = false;
+//                    tempTower = null;
+//                }
+//                break;
+//        }
     }
 
     public TileGrid getGrid() {
