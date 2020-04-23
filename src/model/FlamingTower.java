@@ -13,7 +13,7 @@ public class FlamingTower extends Tower{
     @Override
     public void shoot(Enemy target) {
         super.getProjectiles().add(new FlamingArrow(super.getProjectileType(), target, super.getX(), super.getY(),
-                SIZE/2, SIZE/2));
+                SIZE/2, SIZE/2, getLevel()));
     }
 
 }

@@ -13,7 +13,7 @@ public class FreezeTower extends Tower{
     @Override
     public void shoot(Enemy target) {
         super.getProjectiles().add(new FreezeArrow(super.getProjectileType(), target, super.getX(), super.getY(),
-                SIZE/2, SIZE/2));
+                SIZE/2, SIZE/2, getLevel()));
     }
 
 }

@@ -23,10 +23,7 @@ public class TowerButtonHandler implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent actionEvent) {
         if (player.getGold() >= selectButton.getTowerType().getCost()) {
-            gameView.setCurrentTowerType(selectButton.getTowerType());
-            gameView.setPlacing(true);
-            gameView.setUpgrading(false);
-            gameView.setSelling(false);
+            gameView.setToPlacing(selectButton.getTowerType());
         }
     }
 }

@@ -27,6 +27,7 @@ public class MapClickHandler implements EventHandler<MouseEvent> {
             player.sellTower((int)event.getX()/SIZE, (int)event.getY()/SIZE);
             gameView.setSelling(false);
         } else if (gameView.isUpgrading()) {
+            player.upgradeTower((int)event.getX()/SIZE, (int)event.getY()/SIZE);
             gameView.setUpgrading(false);
         }
     }

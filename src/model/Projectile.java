@@ -19,17 +19,27 @@ public abstract class Projectile implements Entity {
     private boolean hasCollided;
     private ProjectileType type;
 
-    public Projectile(ProjectileType type, Enemy target, float x, float y, int width, int height){
+    public Projectile(ProjectileType type, Enemy target, float x, float y, int width, int height, int level){
         this.type = type;
 
         this.x = x;
         this.y = y;
-        this.speed = type.speed;
-        this.damage = type.damage;
+        if (level == 1) {
+            this.speed = type.speed;
+            this.damage = type.damage;
+            this.image = type.singleImage;
+        } else if (level == 2) {
+            this.speed = type.speed;
+            this.damage = 2 * type.damage;
+            this.image = type.doubleImage;
+        } else if (level == 3) {
+            this.speed = 2 * type.speed;
+            this.damage = 2 * type.damage;
+            this.image = type.doubleImage;
+        }
         this.target = target;
         this.xVelocity = 0;
         this.yVelocity = 0;
-        this.image = type.image;
         this.hasCollided = false;
 
         this.angle = calculateAngle();
@@ -134,6 +144,10 @@ public abstract class Projectile implements Entity {
 
     public void changeSpeed(float change) {
         this.speed = type.speed * change;
+    }
+
+    public void changeDamage(int change) {
+        this.damage = type.damage * change;
     }
 
     public ImageView getImageView() {

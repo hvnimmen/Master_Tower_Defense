@@ -6,19 +6,20 @@ import static view.GameView.SIZE;
 
 public enum TowerType {
 
-    Turret("view/resources/turret_base.png", "view/resources/green_turret.png",  ProjectileType.Archer, 4, 2, 20),
-    Freezing("view/resources/turret_base.png", "view/resources/blue_turret.png",  ProjectileType.Freeze, 4, 2, 20),
-    Flaming("view/resources/turret_base.png", "view/resources/red_turret.png", ProjectileType.Flaming, 4, 2, 20),
-    Launcher("view/resources/turret_base.png", "view/resources/rocket_launcher.png", ProjectileType.Rocket, 15, 4, 80);
+    Turret("view/resources/green_turret.png", "view/resources/double_green_turret.png", "view/resources/green_turret_3.png", ProjectileType.Archer, 4, 2, 20),
+    Freezing("view/resources/blue_turret.png", "view/resources/double_blue_turret.png", "view/resources/blue_turret_3.png", ProjectileType.Freeze, 4, 2, 20),
+    Flaming("view/resources/red_turret.png", "view/resources/double_red_turret.png", "view/resources/red_turret_3.png", ProjectileType.Flaming, 4, 2, 20),
+    Launcher("view/resources/rocket_launcher.png", "view/resources/double_rocket_launcher.png", "view/resources/rocket_launcher_3.png", ProjectileType.Rocket, 15, 4, 80);
 
-    Image baseImage, turretImage;
+    Image turretImage1, turretImage2, turretImage3;
     ProjectileType projectileType;
     int range, cost;
     float cooldown;
 
-    TowerType(String baseName, String turretName, ProjectileType projectileType, int range, float cooldown, int cost){
-        this.baseImage = new Image(baseName, SIZE, SIZE, false, false);
-        this.turretImage = new Image(turretName, SIZE, SIZE, false, false);
+    TowerType(String turretName1, String turretName2, String turretName3, ProjectileType projectileType, int range, float cooldown, int cost){
+        this.turretImage1 = new Image(turretName1, SIZE, SIZE, false, false);
+        this.turretImage2 = new Image(turretName2, SIZE, SIZE, false, false);
+        this.turretImage3 = new Image(turretName3, SIZE, SIZE, false, false);
         this.projectileType = projectileType;
         this.range = range;
         this.cooldown = cooldown;
@@ -26,7 +27,7 @@ public enum TowerType {
     }
 
     public Image getTurretImage() {
-        return this.turretImage;
+        return this.turretImage1;
     }
 
     public int getCost() {

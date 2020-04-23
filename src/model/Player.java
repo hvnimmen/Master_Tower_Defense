@@ -88,6 +88,17 @@ public class Player {
         }
     }
 
+    public void upgradeTower(int x, int y) {
+        for (Tower t : towerList) {
+            if (t.getX() == x && t.getY() == y) {
+                if (t.getLevel() < 3) {
+                    t.levelUp();
+                    gold -= t.getCost();
+                }
+            }
+        }
+    }
+
     public TileGrid getGrid() {
         return grid;
     }

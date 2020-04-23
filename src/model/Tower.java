@@ -12,8 +12,8 @@ import static view.GameView.SIZE;
 
 public abstract class Tower implements Entity{
 
-    private int range, cost, level;
-    private float x, y, displayX, displayY, cooldown, timeSinceLastShot, offset, angle = 0, speedMultplier = 1;
+    private int range, cost, level = 1, damageMultiplier = 1, speedMultiplier = 1;
+    private float x, y, displayX, displayY, cooldown, timeSinceLastShot, offset, angle = 0;
     private ArrayList<Projectile> projectiles;
     private CopyOnWriteArrayList<Enemy> enemies;
     private boolean locked;
@@ -44,8 +44,8 @@ public abstract class Tower implements Entity{
         this.enemies = enemies;
         this.locked = false;
 
-        this.baseImageView = new ImageView(type.baseImage);
-        this.turretImageView = new ImageView(type.turretImage);
+        this.baseImageView = new ImageView(new Image("view/resources/turret_base.png"));
+        this.turretImageView = new ImageView(type.turretImage1);
         baseImageView.setLayoutX(displayX);
         baseImageView.setLayoutY(displayY);
         turretImageView.setLayoutX(displayX);
@@ -171,11 +171,6 @@ public abstract class Tower implements Entity{
         } else {
 
             angle = calculateAngle();
-//            imageView.setRotate(angle);
-//            SnapshotParameters params = new SnapshotParameters();
-//            params.setFill(Color.TRANSPARENT);
-//            this.image = imageView.snapshot(params, null);
-//            offset = (float) ((this.image.getWidth() - SIZE) * 0.5);
 
             if (timeSinceLastShot > cooldown){
                 shoot(target);
@@ -190,7 +185,6 @@ public abstract class Tower implements Entity{
         timeSinceLastShot += Delta();
 
         for (Projectile p : projectiles){
-            p.changeSpeed(speedMultplier);
             p.update();
         }
     }
@@ -199,14 +193,17 @@ public abstract class Tower implements Entity{
         gc.drawImage(baseImage, (x * SIZE) - offset, (y * SIZE) - offset);
     }
 
-    public boolean levelUp(){
-        if (level < 3) {
-            this.speedMultplier *= 2;
-            this.cooldown /= 2;
-            this.level++;
-            return true;
+    public void levelUp(){
+        if (level == 1) {
+            damageMultiplier = 2;
+            this.turretImageView.setImage(type.turretImage2);
+            level++;
+        } else if (level == 2) {
+            cooldown *= 0.5;
+            speedMultiplier = 2;
+            this.turretImageView.setImage(type.turretImage3);
+            level++;
         }
-        return false;
     }
 
     public ImageView getBaseImageView() {
@@ -223,5 +220,9 @@ public abstract class Tower implements Entity{
 
     public ProjectileType getProjectileType() {
         return projectileType;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

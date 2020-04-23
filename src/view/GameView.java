@@ -197,4 +197,25 @@ public class GameView {
     public Game getGame() {
         return this.game;
     }
+
+    public void setToSelling() {
+        selling = true;
+        upgrading = false;
+        placing = false;
+        currentTowerType = null;
+    }
+
+    public void setToUpgrading() {
+        upgrading = true;
+        placing = false;
+        currentTowerType = null;
+        selling = false;
+    }
+
+    public void setToPlacing(TowerType towerType) {
+        placing = true;
+        currentTowerType = towerType;
+        selling = false;
+        upgrading = false;
+    }
 }
