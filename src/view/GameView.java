@@ -1,9 +1,11 @@
 package view;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import controller.*;
@@ -85,7 +87,7 @@ public class GameView {
 
     private void drawUI(){
 
-        topPanel = new SelectPanel(4 * SIZE, 3 * SIZE);
+        topPanel = new SelectPanel(4 * SIZE, 4 * SIZE);
         topPanel.quickAdd(new SelectButton(TowerType.Turret, new Image("view/resources/green_turret.png"), this ));
         topPanel.quickAdd(new SelectButton(TowerType.Flaming, new Image("view/resources/red_turret.png"), this));
         topPanel.quickAdd(new SelectButton(TowerType.Freezing, new Image("view/resources/blue_turret.png"), this));
@@ -93,11 +95,13 @@ public class GameView {
         topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
         topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
 
-        midPanel = new InfoLabel(4 * SIZE, 5 * SIZE, "Gold : " + player.getGold() + "\nWave : " +
-                game.getWaveManager().getWaveNumber() + "\n Lives : " + player.getHP());
+        midPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "");
+        midPanel.setTextAlignment(TextAlignment.CENTER);
+        midPanel.setAlignment(Pos.CENTER);
 
-        botPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\n Lives : " + player.getHP());
+        botPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "Gold : " + player.getGold() + "\nWave : "
+                + game.getWaveManager().getWaveNumber() + "\n Lives : " + player.getHP());
+        botPanel.setTextAlignment(TextAlignment.CENTER);
 
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
@@ -157,7 +161,7 @@ public class GameView {
 
     public void updatePlayerInfo() {
         botPanel.setText("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\n Lives : " + player.getHP());
+                + "\nLives : " + player.getHP());
     }
 
     public TowerType getCurrentTowerType() {
@@ -198,6 +202,10 @@ public class GameView {
 
     public Game getGame() {
         return this.game;
+    }
+
+    public InfoLabel getMidPanel() {
+        return this.midPanel;
     }
 
     public void setToSelling() {

@@ -9,6 +9,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import static view.GameView.SIZE;
 
@@ -21,11 +22,9 @@ public class InfoLabel extends Label {
                 width, height,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT, null);
         setBackground(new Background(backgroundImage));
-        setAlignment(Pos.CENTER_LEFT);
-        setPadding(new Insets(10, 10, 10, 10));
+        setPadding(new Insets(SIZE * 0.25, SIZE * 0.25, SIZE * 0.25, SIZE * 0.25));
         setText(text);
-        setFont(Font.font("Verdana", SIZE*0.5));
-        setAlignment(Pos.CENTER);
+        setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, SIZE*0.35));
     }
 
 }

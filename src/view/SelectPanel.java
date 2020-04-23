@@ -27,7 +27,7 @@ public class SelectPanel extends Pane {
 
     private void setButton(Button b) {
         b.setLayoutX(SIZE * 0.35 + SIZE * (buttonNumber / 2) * 1.15);
-        b.setLayoutY(SIZE * 0.35 + SIZE * (buttonNumber % 2) * 1.15);
+        b.setLayoutY(SIZE * 0.85 + SIZE * (buttonNumber % 2) * 1.15);
         buttonNumber++;
         buttonList.add(b);
         getChildren().add(b);

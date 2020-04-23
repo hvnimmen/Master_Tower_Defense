@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static model.Clock.Delta;
@@ -52,8 +53,14 @@ public class Wave {
 
     private void spawn() {
         if (enemy.getType() == EnemyType.Random) {
-            enemyType = ((Math.random() > 0.5) ? EnemyType.Spider : EnemyType.Zombie);
-            //random nextint
+            int rng = new Random().nextInt(100);
+            if (rng < 75) {
+                enemyType = EnemyType.Normal;
+            } else if (rng < 95) {
+                enemyType = EnemyType.Fast;
+            } else {
+                enemyType = EnemyType.Phantom;
+            }
         } else {
             enemyType = enemy.getType();
         }

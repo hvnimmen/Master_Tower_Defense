@@ -4,8 +4,9 @@ import javafx.scene.image.Image;
 
 public enum EnemyType {
 
-    Zombie("view/resources/white_plane.png", "view/resources/white_plane_shadow.png", 1.5f, 50, 2, 5),
-    Spider("view/resources/green_plane.png", "view/resources/green_plane_shadow.png", 3, 25, 1, 3),
+    Normal("view/resources/white_plane.png", "view/resources/white_plane_shadow.png", 1.5f, 50, 2, 5),
+    Fast("view/resources/green_plane.png", "view/resources/green_plane_shadow.png", 3, 25, 1, 3),
+    Phantom("view/resources/phantom_plane.png", "view/resources/white_plane_shadow.png", 5, 50, 1, 10),
     Random("view/resources/white_plane.png", "view/resources/green_plane_shadow.png", 0, 0, 0, 0);
 
     Image image, shadowImage;
