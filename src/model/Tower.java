@@ -201,6 +201,7 @@ public abstract class Tower implements Entity{
         } else if (level == 2) {
             cooldown *= 0.5;
             speedMultiplier = 2;
+            this.baseImageView.setImage(new Image("view/resources/turret_base_2.png"));
             this.turretImageView.setImage(type.turretImage3);
             level++;
         }

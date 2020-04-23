@@ -37,6 +37,7 @@ public class SelectButton extends Button {
         initializeButton();
         towerButtonHandler = new TowerButtonHandler(this, gameView);
         setOnAction(towerButtonHandler);
+        setOnMouseEntered(towerHoverHandler);
     }
 
     private void initializeButton() {

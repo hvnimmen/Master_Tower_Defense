@@ -29,8 +29,7 @@ public class GameView {
     private Scene gameScene;
     private Stage gameStage;
     private SelectPanel topPanel;
-    private InfoLabel midPanel;
-    private ImageView botPanel;
+    private InfoLabel midPanel, botPanel;
 
     private MapMoveHandler mapMoveHandler;
     private MapClickHandler mapClickHandler;
@@ -54,6 +53,8 @@ public class GameView {
         select = new VBox();
         gamePane.setCenter(mapPane);
         gamePane.setRight(select);
+        gamePane.setBackground(new Background(new BackgroundImage(TileType.Grass.getImage(), BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, null)));
         gameScene = new Scene(gamePane, (X_TILES + MENU_X_TILES) * SIZE, Y_TILES * SIZE);
         gameStage = new Stage();
         gameStage.setScene(gameScene);
@@ -92,10 +93,11 @@ public class GameView {
         topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
         topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
 
-        midPanel = new InfoLabel("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\n Lives : " + player.getHP());
+        midPanel = new InfoLabel(4 * SIZE, 5 * SIZE, "Gold : " + player.getGold() + "\nWave : " +
+                game.getWaveManager().getWaveNumber() + "\n Lives : " + player.getHP());
 
-        botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
+        botPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+                + "\n Lives : " + player.getHP());
 
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
@@ -154,7 +156,7 @@ public class GameView {
     }
 
     public void updatePlayerInfo() {
-        midPanel.setText("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+        botPanel.setText("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
                 + "\n Lives : " + player.getHP());
     }
 

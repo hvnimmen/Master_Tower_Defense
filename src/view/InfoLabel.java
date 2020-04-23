@@ -14,11 +14,11 @@ import static view.GameView.SIZE;
 
 public class InfoLabel extends Label {
 
-    public InfoLabel(String text){
-        setPrefWidth(4 * SIZE);
-        setPrefHeight(5 * SIZE);
+    public InfoLabel(int width, int height, String text){
+        setPrefWidth(width);
+        setPrefHeight(height);
         BackgroundImage backgroundImage = new BackgroundImage(new Image("view/resources/metal_panel.png",
-                4 * SIZE, 5 * SIZE,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                width, height,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT, null);
         setBackground(new Background(backgroundImage));
         setAlignment(Pos.CENTER_LEFT);
