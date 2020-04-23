@@ -2,6 +2,8 @@ package model;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 import view.*;
 
 import static model.Leveller.LoadMap;
@@ -14,12 +16,13 @@ public class Game {
     private Player player;
     private AnimationTimer gameLoop;
 
-    static TileGrid grid = LoadMap("src/model/map");
+    static TileGrid grid;
 
     public Game(MainMenu mainMenu){
         this.mainMenu = mainMenu;
+        this.grid = LoadMap("src/model/map");
         startGame();
-        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 0.5f, 1);
+        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 5, 3);
         player = new Player(grid, waveManager, this);
         this.gameView = new GameView(this);
     }
@@ -30,13 +33,24 @@ public class Game {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                Clock.update();
-                waveManager.update();
-                player.update();
 
-                gameView.updateEnemies(waveManager.getCurrentWave().getEnemyList());
-                gameView.updateTowersAndProjectiles(player.getTowerList());
-                gameView.updatePlayerInfo();
+                if (player.getHP() > 0) {
+                    Clock.update();
+                    waveManager.update();
+                    player.update();
+
+                    gameView.updateEnemies(waveManager.getCurrentWave().getEnemyList());
+                    gameView.updateTowersAndProjectiles(player.getTowerList());
+                    gameView.updatePlayerInfo();
+
+                    for (Enemy e: waveManager.getCurrentWave().getEnemyList()) {
+                        System.out.print(e.getType().toString());
+                    }
+                    System.out.println("");
+                } else {
+                    gameLoop.stop();
+                    gameView.displayLoss();
+                }
             }
         };
         gameLoop.start();

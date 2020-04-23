@@ -22,7 +22,7 @@ public class Player {
     }
 
     public void setup(){
-        gold = 50;
+        gold = 400;
         hp = 20;
         score = 0;
     }
@@ -117,6 +117,10 @@ public class Player {
 
     public int getGold() {
         return gold;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public int getHP() {

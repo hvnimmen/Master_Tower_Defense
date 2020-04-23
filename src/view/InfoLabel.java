@@ -18,12 +18,22 @@ public class InfoLabel extends Label {
     public InfoLabel(int width, int height, String text){
         setPrefWidth(width);
         setPrefHeight(height);
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("view/resources/metal_panel.png",
-                width, height,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT, null);
+        setText(text);
+
+        BackgroundImage backgroundImage;
+
+        if (width > 1.5 * height) {
+            backgroundImage = new BackgroundImage(new Image("view/resources/metal_panel_half.png",
+                    width, height,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.DEFAULT, null);
+        } else {
+            backgroundImage = new BackgroundImage(new Image("view/resources/metal_panel.png",
+                    width, height,false, true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.DEFAULT, null);
+        }
+
         setBackground(new Background(backgroundImage));
         setPadding(new Insets(SIZE * 0.25, SIZE * 0.25, SIZE * 0.25, SIZE * 0.25));
-        setText(text);
         setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, SIZE*0.35));
     }
 

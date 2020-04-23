@@ -54,10 +54,14 @@ public class Wave {
     private void spawn() {
         if (enemy.getType() == EnemyType.Random) {
             int rng = new Random().nextInt(100);
-            if (rng < 75) {
+            if (rng < 65) {
                 enemyType = EnemyType.Normal;
-            } else if (rng < 95) {
+            } else if (rng < 76) {
                 enemyType = EnemyType.Fast;
+            } else if (rng < 87) {
+                enemyType = EnemyType.Tank;
+            } else if (rng < 98) {
+                enemyType = EnemyType.Fighter;
             } else {
                 enemyType = EnemyType.Phantom;
             }
@@ -65,7 +69,6 @@ public class Wave {
             enemyType = enemy.getType();
         }
         enemyList.add(new Enemy(enemyType, enemy.getStartTile(), enemy.getGrid()));
-//        enemyList.add(new Enemy(enemy.getType(), enemy.getStartTile(), enemy.getGrid()));
         enemiesSpawned++;
     }
 

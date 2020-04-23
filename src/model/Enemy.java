@@ -1,18 +1,16 @@
 package model;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import static model.Clock.Delta;
 import static view.GameView.SIZE;
 
 public class Enemy implements Entity{
 
-    private int damage, displayX, displayY, angle;
-    private float x, y, speed, health, maxHealth, healthPercentage;
+    private int damage, displayX, displayY, angle, offset;
+    private float x, y, speed, health, maxHealth, healthPercentage, healthBarLength;
     private boolean first, alive, hugsLeft;
     private String status;
     private EnemyType type;
@@ -51,13 +49,16 @@ public class Enemy implements Entity{
         //randomizer
         this.hugsLeft = (Math.random() > 0.5);
 
-        this.healthBackground = new ImageView(new Image("view/resources/health_background.png", SIZE, SIZE/8, false, false));
-        this.healthForeground = new ImageView(new Image("view/resources/health_foreground.png", SIZE, SIZE/8, false, false));
-        this.healthBorder = new ImageView(new Image("view/resources/health_border.png", SIZE, SIZE/8, false, false));
+        this.healthBarLength = health / 75;
+        this.offset = (int)((1 - healthBarLength) * 0.5 * SIZE);
 
-        this.normal = new Image("view/resources/health_foreground.png");
-        this.aflame = new Image("view/resources/flaming-health-fg.png");
-        this.frozen = new Image("view/resources/frozen-health-fg.png");
+        this.healthBackground = new ImageView(new Image("view/resources/health_background.png", SIZE * healthBarLength, SIZE/8, false, false));
+        this.healthForeground = new ImageView(new Image("view/resources/health_foreground.png", SIZE * healthBarLength, SIZE/8, false, false));
+        this.healthBorder = new ImageView(new Image("view/resources/health_border.png", SIZE * healthBarLength, SIZE/8, false, false));
+
+        this.normal = new Image("view/resources/health_foreground.png", SIZE * healthBarLength, SIZE/8, false, false);
+        this.aflame = new Image("view/resources/flaming-health-fg.png", SIZE * healthBarLength, SIZE/8, false, false);
+        this.frozen = new Image("view/resources/frozen-health-fg.png", SIZE * healthBarLength, SIZE/8, false, false);
 
         this.dir = new int[2];
         this.dir[0] = 1;
@@ -121,7 +122,7 @@ public class Enemy implements Entity{
             displayX = (int)(x * SIZE);
             displayY = (int)(y * SIZE);
         }
-        healthForeground.setFitWidth(SIZE * health / maxHealth);
+        healthForeground.setFitWidth(SIZE * healthBarLength * health / maxHealth);
         if (status.equals("frozen")) {
             healthForeground.setImage(frozen);
         } else if (status.equals("aflame")) {
@@ -341,4 +342,6 @@ public class Enemy implements Entity{
     public ImageView getShadowImageView() {
         return this.shadowImageView;
     }
+
+    public int getOffset() { return this.offset; }
 }

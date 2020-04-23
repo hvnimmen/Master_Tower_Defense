@@ -44,7 +44,7 @@ public abstract class Tower implements Entity{
         this.enemies = enemies;
         this.locked = false;
 
-        this.baseImageView = new ImageView(new Image("view/resources/turret_base.png"));
+        this.baseImageView = new ImageView(new Image("view/resources/turret_base.png", SIZE, SIZE, false, false));
         this.turretImageView = new ImageView(type.turretImage1);
         baseImageView.setLayoutX(displayX);
         baseImageView.setLayoutY(displayY);
@@ -201,7 +201,7 @@ public abstract class Tower implements Entity{
         } else if (level == 2) {
             cooldown *= 0.5;
             speedMultiplier = 2;
-            this.baseImageView.setImage(new Image("view/resources/turret_base_2.png"));
+            this.baseImageView.setImage(new Image("view/resources/turret_base_2.png", SIZE, SIZE, false, false));
             this.turretImageView.setImage(type.turretImage3);
             level++;
         }

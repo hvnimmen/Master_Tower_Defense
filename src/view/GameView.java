@@ -2,9 +2,14 @@ package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -15,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameView {
 
-    public static final int SIZE = 64;
+    public static final int SIZE = 48;
 
     public static final int X_TILES = 18;
     public static final int Y_TILES = 12;
@@ -31,7 +36,10 @@ public class GameView {
     private Scene gameScene;
     private Stage gameStage;
     private SelectPanel topPanel;
-    private InfoLabel midPanel, botPanel;
+    private InfoLabel midPanel, botPanel1;
+    private Pane botPanel2;
+    private Button waveButton;
+    private Text waveText, lossText;
 
     private MapMoveHandler mapMoveHandler;
     private MapClickHandler mapClickHandler;
@@ -53,6 +61,7 @@ public class GameView {
         gamePane = new BorderPane();
         mapPane = new Pane();
         select = new VBox();
+
         gamePane.setCenter(mapPane);
         gamePane.setRight(select);
         gamePane.setBackground(new Background(new BackgroundImage(TileType.Grass.getImage(), BackgroundRepeat.REPEAT,
@@ -88,45 +97,65 @@ public class GameView {
     private void drawUI(){
 
         topPanel = new SelectPanel(4 * SIZE, 4 * SIZE);
-        topPanel.quickAdd(new SelectButton(TowerType.Turret, new Image("view/resources/green_turret.png"), this ));
-        topPanel.quickAdd(new SelectButton(TowerType.Flaming, new Image("view/resources/red_turret.png"), this));
-        topPanel.quickAdd(new SelectButton(TowerType.Freezing, new Image("view/resources/blue_turret.png"), this));
-        topPanel.quickAdd(new SelectButton(TowerType.Launcher, new Image("view/resources/rocket_launcher.png"), this));
-        topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
-        topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
+        topPanel.quickAdd(new SelectButton(TowerType.Turret, new Image("view/resources/green_turret.png", SIZE, SIZE, false, false), this ));
+        topPanel.quickAdd(new SelectButton(TowerType.Flaming, new Image("view/resources/red_turret.png", SIZE, SIZE, false, false), this));
+        topPanel.quickAdd(new SelectButton(TowerType.Freezing, new Image("view/resources/blue_turret.png", SIZE, SIZE, false, false), this));
+        topPanel.quickAdd(new SelectButton(TowerType.Launcher, new Image("view/resources/rocket_launcher.png", SIZE, SIZE, false, false), this));
+        topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png", SIZE, SIZE, false, false), this));
+        topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png", SIZE, SIZE, false, false), this));
 
         midPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "");
         midPanel.setTextAlignment(TextAlignment.CENTER);
         midPanel.setAlignment(Pos.CENTER);
 
-        botPanel = new InfoLabel(4 * SIZE, 4 * SIZE, "Gold : " + player.getGold() + "\nWave : "
-                + game.getWaveManager().getWaveNumber() + "\n Lives : " + player.getHP());
-        botPanel.setTextAlignment(TextAlignment.CENTER);
+        botPanel1 = new InfoLabel(4 * SIZE, 2 * SIZE, "");
+        botPanel1.setTextAlignment(TextAlignment.CENTER);
+        botPanel1.setAlignment(Pos.CENTER);
+
+        waveText = new Text(0, SIZE * 0.75, "Wave : " + game.getWaveManager().getWaveNumber());
+        waveText.setTextAlignment(TextAlignment.CENTER);
+        waveText.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, SIZE*0.35));
+        waveText.setWrappingWidth(4 * SIZE);
+
+        waveButton = new WaveButton("Send wave", (int)(SIZE * 2.15), (int)(SIZE * 0.7));
+        waveButton.setLayoutX(2 * SIZE - waveButton.getPrefWidth() / 2);
+        waveButton.setLayoutY(1.25 * SIZE - waveButton.getPrefHeight() / 2);
+        waveButton.setOnMouseClicked(new WaveButtonHandler(game));
+
+        botPanel2 = new Pane();
+        botPanel2.getChildren().addAll(new ImageView(new Image("view/resources/metal_panel_half.png", 4 * SIZE,
+                2 * SIZE, false, false)), waveText, waveButton);
 
         select.setBackground(new Background(new BackgroundImage(new Image("view/resources/grass_tile.png", SIZE,
                 SIZE, false, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT, null)));
 
-        select.getChildren().addAll(topPanel, midPanel, botPanel);
+        select.getChildren().addAll(topPanel, midPanel, botPanel1, botPanel2);
     }
 
     public void updateEnemies(CopyOnWriteArrayList<Enemy> enemyList){
         for (Enemy e : enemyList) {
 
-            e.getShadowImageView().setLayoutX(e.getDisplayX() + SIZE/2);
-            e.getShadowImageView().setLayoutY(e.getDisplayY() + SIZE/4);
+            ImageView shadow = e.getShadowImageView();
+            shadow.setLayoutX(e.getDisplayX() + SIZE * 0.5);
+            shadow.setLayoutY(e.getDisplayY() + SIZE * 0.25);
 
-            e.getImageView().setLayoutX(e.getDisplayX());
-            e.getImageView().setLayoutY(e.getDisplayY());
+            ImageView enemy = e.getImageView();
+            enemy.setLayoutX(e.getDisplayX());
+            enemy.setLayoutY(e.getDisplayY());
 
-            e.getHealthBackground().setLayoutX(e.getDisplayX());
-            e.getHealthBackground().setLayoutY(e.getDisplayY());
+            ImageView hpBackground = e.getHealthBackground();
+            int offset = e.getOffset();
+            hpBackground.setLayoutX(e.getDisplayX() + offset);
+            hpBackground.setLayoutY(e.getDisplayY());
 
-            e.getHealthForeground().setLayoutX(e.getDisplayX());
-            e.getHealthForeground().setLayoutY(e.getDisplayY());
+            ImageView hpForeground = e.getHealthForeground();
+            hpForeground.setLayoutX(e.getDisplayX() + offset);
+            hpForeground.setLayoutY(e.getDisplayY());
 
-            e.getHealthBorder().setLayoutX(e.getDisplayX());
-            e.getHealthBorder().setLayoutY(e.getDisplayY());
+            ImageView hpBorder = e.getHealthBorder();
+            hpBorder.setLayoutX(e.getDisplayX() + offset);
+            hpBorder.setLayoutY(e.getDisplayY());
 
             if (!gamePane.getChildren().contains(e.getImageView())){
                 gamePane.getChildren().addAll(e.getShadowImageView(), e.getImageView(), e.getHealthBackground(), e.getHealthForeground(), e.getHealthBorder());
@@ -160,8 +189,21 @@ public class GameView {
     }
 
     public void updatePlayerInfo() {
-        botPanel.setText("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\nLives : " + player.getHP());
+        waveText.setText("Wave : " + game.getWaveManager().getWaveNumber());
+        botPanel1.setText("Lives : " + player.getHP() + "\nGold : " + player.getGold() + "\nScore: " + player.getScore());
+    }
+
+    public void displayLoss() {
+
+        lossText = new Text(0, (Y_TILES * 0.5 - 0.5) * SIZE, "You have lost\nFinal Score: " + player.getScore());
+        lossText.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD, SIZE * 1.5));
+        lossText.setFill(Color.RED);
+        lossText.setTextAlignment(TextAlignment.CENTER);
+        lossText.setWrappingWidth(X_TILES * SIZE);
+
+        gamePane.getChildren().add(lossText);
+
+        disableListeners();
     }
 
     public TowerType getCurrentTowerType() {
@@ -227,5 +269,12 @@ public class GameView {
         currentTowerType = towerType;
         selling = false;
         upgrading = false;
+    }
+
+    public void disableListeners() {
+        gamePane.setOnMouseMoved(null);
+
+        gamePane.setOnMouseClicked(null);
+
     }
 }
