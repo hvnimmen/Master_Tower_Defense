@@ -10,8 +10,13 @@ public class MainMenu {
         this.mainMenuView = new MainMenuView(this);
     }
 
-    public void openNewGame() {
-        Game game = new Game(this);
+    public void openNewGame(String fileURL) {
+        Game game = new Game(this, fileURL);
+        mainMenuView.getMainStage().hide();
+    }
+
+    public void openEditor() {
+        Editor editor = new Editor(this);
         mainMenuView.getMainStage().hide();
     }
 

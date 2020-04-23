@@ -2,11 +2,9 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import model.Game;
 import model.Player;
 import view.GameView;
 import view.SelectButton;
-import view.SelectPanel;
 
 public class TowerButtonHandler implements EventHandler<ActionEvent> {
 

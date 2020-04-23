@@ -1,9 +1,6 @@
 package model;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.*;
 import view.*;
 
 import static model.Leveller.LoadMap;
@@ -18,11 +15,15 @@ public class Game {
 
     static TileGrid grid;
 
-    public Game(MainMenu mainMenu){
+    public Game(MainMenu mainMenu, String fileURL){
         this.mainMenu = mainMenu;
-        this.grid = LoadMap("src/model/map");
+        try {
+            this.grid = LoadMap(fileURL);
+        } catch (Exception e) {
+            this.grid = LoadMap("src/model/map");
+        }
         startGame();
-        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 5, 3);
+        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 1, 20);
         player = new Player(grid, waveManager, this);
         this.gameView = new GameView(this);
     }
