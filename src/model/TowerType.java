@@ -25,4 +25,12 @@ public enum TowerType {
         this.cost = cost;
     }
 
+    public Image getTurretImage() {
+        return this.turretImage;
+    }
+
+    public int getCost() {
+        return this.cost;
+    }
+
 }

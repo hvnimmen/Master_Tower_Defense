@@ -17,6 +17,7 @@ public class MapMoveHandler implements EventHandler<MouseEvent> {
     private Image selling = new Image("view/resources/sell_crosshair.png", SIZE, SIZE, false, false);
     private Image upgrading = new Image("view/resources/upgrade_crosshair.png", SIZE, SIZE, false, false);
     private ImageView crosshair = new ImageView(normal);
+    private ImageView currentTower = new ImageView(selling);
 
     public MapMoveHandler(GameView gameView){
         this.gameView = gameView;
@@ -24,13 +25,28 @@ public class MapMoveHandler implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
         if (gameView.isSelling()) {
-            crosshair.setImage(selling) ;
+            crosshair.setImage(selling);
         } else if (gameView.isUpgrading()) {
             crosshair.setImage(upgrading);
-        } else if (gameView.getCurrentTowerType() != null) {
-            crosshair.setImage(normal);
         } else {
             crosshair.setImage(normal);
+            if (gameView.isPlacing()) {
+                currentTower.setImage(gameView.getCurrentTowerType().getTurretImage());
+                if (event.getX() < X_TILES * SIZE) {
+                    currentTower.setLayoutX((int)Math.floor(event.getX()/SIZE)*SIZE);
+                    currentTower.setLayoutY((int)Math.floor(event.getY()/SIZE)*SIZE);
+                } else {
+                    currentTower.setLayoutX(event.getX() - SIZE / 2);
+                    currentTower.setLayoutY(event.getY() - SIZE / 2);
+                }
+                if(!gameView.getGamePane().getChildren().contains(currentTower)){
+                    gameView.getGamePane().getChildren().add(currentTower);
+                }
+            } else {
+                if(gameView.getGamePane().getChildren().contains(currentTower)){
+                    gameView.getGamePane().getChildren().remove(currentTower);
+                }
+            }
         }
         if(event.getX() < X_TILES * SIZE){
             crosshair.setLayoutX((int)Math.floor(event.getX()/SIZE)*SIZE);

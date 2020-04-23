@@ -19,12 +19,16 @@ public class ActionButtonHandler implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent actionEvent) {
         if (selectButton.getName().equals("sell")) {
+            System.out.println("selling");
             gameView.setSelling(true);
             gameView.setUpgrading(false);
+            gameView.setPlacing(false);
             gameView.setCurrentTowerType(null);
         } else if (selectButton.getName().equals("upgrade")) {
+            System.out.println("upgrading");
             gameView.setUpgrading(true);
             gameView.setSelling(false);
+            gameView.setPlacing(false);
             gameView.setCurrentTowerType(null);
         }
     }

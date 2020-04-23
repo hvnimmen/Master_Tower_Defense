@@ -21,6 +21,7 @@ public class GameView {
     public static final int MENU_X_TILES = 4;
 
     private Game game;
+    private Player player;
 
     private BorderPane gamePane;
     private Pane mapPane;
@@ -36,10 +37,11 @@ public class GameView {
     private GameQuitHandler gameQuitHandler;
 
     private TowerType currentTowerType;
-    private boolean selling, upgrading;
+    private boolean selling, upgrading, placing;
 
     public GameView(Game game) {
         this.game = game;
+        this.player = game.getPlayer();
         initializeStage();
         drawMap();
         drawUI();
@@ -62,7 +64,7 @@ public class GameView {
         mapMoveHandler = new MapMoveHandler(this);
         gamePane.setOnMouseMoved(mapMoveHandler);
 
-        mapClickHandler = new MapClickHandler(game.getPlayer());
+        mapClickHandler = new MapClickHandler(game.getPlayer(), this);
         gamePane.setOnMouseClicked(mapClickHandler);
 
         gameQuitHandler = new GameQuitHandler(game);
@@ -90,8 +92,8 @@ public class GameView {
         topPanel.quickAdd(new SelectButton("upgrade", new Image("view/resources/upgrade.png"), this));
         topPanel.quickAdd(new SelectButton("sell", new Image("view/resources/sell.png"), this));
 
-        midPanel = new InfoLabel("Gold : " + Player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\n Lives : " + Player.getHP());
+        midPanel = new InfoLabel("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+                + "\n Lives : " + player.getHP());
 
         botPanel = new ImageView(new Image("view/resources/metal_panel.png", 4*SIZE, 4*SIZE, false, false));
 
@@ -152,8 +154,8 @@ public class GameView {
     }
 
     public void updatePlayerInfo() {
-        midPanel.setText("Gold : " + Player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
-                + "\n Lives : " + Player.getHP());
+        midPanel.setText("Gold : " + player.getGold() + "\nWave : " + game.getWaveManager().getWaveNumber()
+                + "\n Lives : " + player.getHP());
     }
 
     public TowerType getCurrentTowerType() {
@@ -182,5 +184,17 @@ public class GameView {
 
     public Pane getGamePane() {
         return this.gamePane;
+    }
+
+    public void setPlacing(boolean placing) {
+        this.placing = placing;
+    }
+
+    public boolean isPlacing() {
+        return this.placing;
+    }
+
+    public Game getGame() {
+        return this.game;
     }
 }

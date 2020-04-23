@@ -19,13 +19,13 @@ public class Game {
     public Game(MainMenu mainMenu){
         this.mainMenu = mainMenu;
         startGame();
+        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 0.5f, 1);
+        player = new Player(grid, waveManager, this);
         this.gameView = new GameView(this);
     }
 
     private void startGame() {
 
-        waveManager = new WaveManager(new Enemy(EnemyType.Random, grid.getTile(0, 10), grid), 0.5f, 1);
-        player = new Player(grid, waveManager);
 
         gameLoop = new AnimationTimer() {
             @Override
@@ -57,6 +57,10 @@ public class Game {
 
     public WaveManager getWaveManager() {
         return this.waveManager;
+    }
+
+    public GameView getGameView() {
+        return this.gameView;
     }
 
 }
